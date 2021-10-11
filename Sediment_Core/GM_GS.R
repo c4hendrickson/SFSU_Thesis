@@ -6,8 +6,11 @@ getwd() #get working directory
 setwd() #set working directory
 list(ls) #list all objects
 
-GM_GS <- read.csv("Sediment core data/GM_GS.csv") #read "GM_GS" in file Sediment core data, make it file "GM_GS"
+# DATA
+GM_GS <- read.csv("Sediment core data/GM_GS.csv") 
+GM_combine <- read.csv("Sediment core data/GM_combine.csv")
 
+# PACKAGES
 library(ggplot2)
 library(plotly)
 library(dplyr)
@@ -20,7 +23,7 @@ library(TMB)
 library(Matrix)
 library(car)
 
-####summarize data####
+# SUMMARIZE DATA
 
 GM_GS_sum <- GM_GS %>%
   select(year, reef, in.out, position, top.bot, grain, percent) %>%
@@ -30,10 +33,10 @@ GM_GS_sum <- GM_GS %>%
 
 GM_GS_sum
 
-#from OM code, factoring
+# FACTORING
 
 GM_GS_sum$in.out <- factor(GM_GS_sum$in.out, c("IN", "OUT"))
-GM_GS_sum$position <- factor(GM_GS_sum$position, c("-1", "1", "8", "16"))
+GM_GS_sum$position <- factor(GM_GS_sum$position, c("0", "12", "19", "27"))
 GM_GS_sum$grain <- factor(GM_GS_sum$grain, c("sand", "silt", "clay"))
 GM_GS_sum$year <- factor(GM_GS_sum$year, c("1", "2"))
 GM_GS_sum$reef <- factor(GM_GS_sum$reef, c("1", "2", "3"))
@@ -54,7 +57,7 @@ GMGS1 +
   geom_bar(position=position_dodge(0.9), stat="identity", color="grey") +
   geom_errorbar(aes(ymin = mean-se, ymax = mean+se), position=position_dodge(0.9), width=0.2) +
   scale_fill_manual(name="Grain", breaks=c("sand", "silt", "clay"), labels=c("sand", "silt", "clay"), values=c("red", "orange", "yellow")) +
-  labs(title="GM, Reef 1, IN, Top v Bot, 2019 v 2020") +
+  labs(title="GM, Reef 1, With Reef, Top v Bot, 2019 v 2020") +
   theme(axis.text.x = element_text(face="plain", color="black", size=12, angle=0),
         axis.text.y = element_text(face="plain", color="black", size=12, angle=0),
         axis.line = element_line(color="black", size=0.5, linetype="solid")) +
@@ -77,7 +80,7 @@ GMGS1 +
   geom_bar(position=position_dodge(0.9), stat="identity", color="grey") +
   geom_errorbar(aes(ymin = mean-se, ymax = mean+se), position=position_dodge(0.9), width=0.2) +
   scale_fill_manual(name="grain", breaks=c("sand", "silt", "clay"), labels=c("sand", "silt", "clay"), values=c("red", "orange", "yellow")) +
-  labs(title="GM Reef 1 OUT Top v Bot, 2019 v 2020") +
+  labs(title="GM, Reef 1, Without Reef, Top v Bot, 2019 v 2020") +
   theme(axis.text.x = element_text(face="plain", color="black", size=12, angle=0),
         axis.text.y = element_text(face="plain", color="black", size=12, angle=0),
         axis.line = element_line(color="black", size=0.5, linetype="solid")) +
@@ -107,7 +110,7 @@ GMGS1 +
   geom_bar(position=position_dodge(0.9), stat="identity", color="grey") +
   geom_errorbar(aes(ymin = mean-se, ymax = mean+se), position=position_dodge(0.9), width=0.2) +
   scale_fill_manual(name="grain", breaks=c("sand", "silt", "clay"), labels=c("sand", "silt", "clay"), values=c("red", "orange", "yellow")) +
-  labs(title="GM Reef 2 IN Top v Bot, 2019 v 2020") +
+  labs(title="GM, Reef 2, With Reef, Top v Bot, 2019 v 2020") +
   theme(axis.text.x = element_text(face="plain", color="black", size=12, angle=0),
         axis.text.y = element_text(face="plain", color="black", size=12, angle=0),
         axis.line = element_line(color="black", size=0.5, linetype="solid")) +
@@ -131,7 +134,7 @@ GMGS1 +
   geom_bar(position=position_dodge(0.9), stat="identity", color="grey") +
   geom_errorbar(aes(ymin = mean-se, ymax = mean+se), position=position_dodge(0.9), width=0.2) +
   scale_fill_manual(name="grain", breaks=c("sand", "silt", "clay"), labels=c("sand", "silt", "clay"), values=c("red", "orange", "yellow")) +
-  labs(title="GM Reef 2 OUT Top v Bot, 2019 v 2020") +
+  labs(title="GM, Reef 2, Without Reef, Top v Bot, 2019 v 2020") +
   theme(axis.text.x = element_text(face="plain", color="black", size=12, angle=0),
         axis.text.y = element_text(face="plain", color="black", size=12, angle=0),
         axis.line = element_line(color="black", size=0.5, linetype="solid")) +
@@ -157,7 +160,7 @@ GMGS1 +
   geom_bar(position=position_dodge(0.9), stat="identity", color="grey") +
   geom_errorbar(aes(ymin = mean-se, ymax = mean+se), position=position_dodge(0.9), width=0.2) +
   scale_fill_manual(name="grain", breaks=c("sand", "silt", "clay"), labels=c("sand", "silt", "clay"), values=c("red", "orange", "yellow")) +
-  labs(title="GM Reef 3 IN Top v Bot, 2019 v 2020") +
+  labs(title="GM, Reef 3, With Reef, Top v Bot, 2019 v 2020") +
   theme(axis.text.x = element_text(face="plain", color="black", size=12, angle=0),
         axis.text.y = element_text(face="plain", color="black", size=12, angle=0),
         axis.line = element_line(color="black", size=0.5, linetype="solid")) +
@@ -181,7 +184,7 @@ GMGS1 +
   geom_bar(position=position_dodge(0.9), stat="identity", color="grey") +
   geom_errorbar(aes(ymin = mean-se, ymax = mean+se), position=position_dodge(0.9), width=0.2) +
   scale_fill_manual(name="grain", breaks=c("sand", "silt", "clay"), labels=c("sand", "silt", "clay"), values=c("red", "orange", "yellow")) +
-  labs(title="GM Reef 3 OUT Top v Bot, 2019 v 2020") +
+  labs(title="GM, Reef 3, Without Reef, Top v Bot, 2019 v 2020") +
   theme(axis.text.x = element_text(face="plain", color="black", size=12, angle=0),
         axis.text.y = element_text(face="plain", color="black", size=12, angle=0),
         axis.line = element_line(color="black", size=0.5, linetype="solid")) +
@@ -626,10 +629,10 @@ anova(glmm1)
 
 # Ed Connor analysis - glmmTMB #
 
-freef=as.factor(SR_combine$reef)
-fcore=as.factor(SR_combine$core)
+freef=as.factor(GM_GS_grain$reef)
+fcore=as.factor(GM_GS_grain$core)
 
-newdf=data.frame(SR_combine, freef, fcore)
+newdf=data.frame(GM_GS_grain, freef, fcore)
 head(newdf)
 
 newdf=newdf[161:320,]
